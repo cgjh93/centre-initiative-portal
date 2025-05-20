@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            max-width: 800px;
+        }
+        .container {
+            margin: 20px 0;
+        }
+        .hidden {
+            display: none;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Admin Login</h2>
+        <form id="loginForm">
+            <input type="password" id="password" placeholder="Enter password">
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <div id="adminPanel" class="container hidden">
+        <h2>Admin Panel</h2>
+        <button onclick="exportToExcel()">Export to Excel</button>
+        <table>
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Project Size</th>
+                    <th>Start Date</th>
+                    <th>Duration (days)</th>
+                    <th>Effort (days/week)</th>
+                    <th>Lead Organisation</th>
+                    <th>Potential Leads</th>
+                    <th>Submitted At</th>
+                </tr>
+            </thead>
+            <tbody id="initiativesTableBody"></tbody>
+        </table>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const password = document.getElementById('password').value;
+            if (password === 'admin123') {
+                showAdminPanel();
+            } else {
+                alert('Incorrect password!');
+            }
+        });
+
+        function showAdminPanel() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            populateTable();
+        }
+
+        function populateTable() {
+            const initiatives = JSON.parse(localStorage.getItem('initiatives') || '[]');
+            const tbody = document.getElementById('initiativesTableBody');
+            tbody.innerHTML = '';
+            initiatives.forEach(initiative => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${initiative.description}</td>
+                    <td>${initiative.project_size}</td>
+                    <td>${new Date(initiative.start_date).toLocaleDateString()}</td>
+                    <td>${initiative.duration}</td>
+                    <td>${initiative.effort}</td>
+                    <td>${initiative.lead_organisation}</td>
+                    <td>${initiative.potential_leads}</td>
+                    <td>${new Date(initiative.submitted_at).toLocaleString()}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function exportToExcel() {
+            const initiatives = JSON.parse(localStorage.getItem('initiatives') || '[]');
+            if (initiatives.length === 0) {
+                alert('No initiatives to export!');
+                return;
+            }
+
+            // Create CSV content
+            const headers = ['Description', 'Project Size', 'Start Date', 'Duration (Months)', 
+                           'Effort (days/week)', 'Lead Organisation', 'Potential Leads (likely sponsor and project lead)', 'Submitted At'];
+            
+            let csvContent = headers.join(',') + '\n';
+            
+            initiatives.forEach(initiative => {
+                const row = [
+                    initiative.description,
+                    initiative.project_size,
+                    new Date(initiative.start_date).toLocaleDateString(),
+                    initiative.duration,
+                    initiative.effort,
+                    initiative.lead_organisation,
+                    initiative.potential_leads,
+                    new Date(initiative.submitted_at).toLocaleString()
+                ];
+                csvContent += row.join(',') + '\n';
+            });
+
+            // Create download link
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', 'initiatives.csv');
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+    </script>
+</body>
+</html>

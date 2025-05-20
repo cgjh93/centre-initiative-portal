@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Centre Initiative Submission Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            max-width: 800px;
+        }
+        form {
+            margin-top: 20px;
+        }
+        input, textarea, select {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        textarea {
+            height: 100px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .success {
+            display: none;
+            color: green;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Centre Initiative Submission Form</h1>
+    <div id="successMessage" class="success">
+        Initiative submitted successfully!
+    </div>
+    <form id="initiativeForm">
+        <label>Initiative Description:</label>
+        <textarea id="description" required></textarea>
+        
+        <label>Estimated Project Size:</label>
+        <select id="project_size" required>
+            <option value="">Select size</option>
+            <option value="<100k"><$100k</option>
+            <option value="100-200k">$100-200k</option>
+            <option value="200-300k">$200-300k</option>
+            <option value=">300k">>$300k</option>
+        </select>
+        
+        <label>Start Date:</label>
+        <select id="start_date" required>
+            <option value="">Select date</option>
+            <option value="2025-07-01">1 July 2025</option>
+            <option value="2026-01-01">1 January 2026</option>
+            <option value="2026-07-01">1 July 2026</option>
+        </select>
+        
+        <label>Likely Duration (Months):</label>
+        <input type="number" id="duration" min="1" required>
+        
+        <label>Potential Effort (days/week):</label>
+        <input type="number" id="effort" min="1" max="7" required>
+        
+        <label>Lead Organisation(s):</label>
+        <input type="text" id="lead_organisation" required>
+        
+        <label>Potential Leads (likely sponsor and project lead):</label>
+        <input type="text" id="potential_leads" required>
+        
+        <button type="submit">Submit Initiative</button>
+    </form>
+
+    <script>
+        document.getElementById('initiativeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                description: document.getElementById('description').value,
+                project_size: document.getElementById('project_size').value,
+                start_date: document.getElementById('start_date').value,
+                duration: parseInt(document.getElementById('duration').value),
+                effort: parseInt(document.getElementById('effort').value),
+                lead_organisation: document.getElementById('lead_organisation').value,
+                potential_leads: document.getElementById('potential_leads').value,
+                submitted_at: new Date().toISOString()
+            };
+
+            let initiatives = JSON.parse(localStorage.getItem('initiatives') || '[]');
+            initiatives.push(formData);
+            localStorage.setItem('initiatives', JSON.stringify(initiatives));
+
+            const successMessage = document.getElementById('successMessage');
+            successMessage.style.display = 'block';
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+
+            this.reset();
+        });
+    </script>
+</body>
+</html>
