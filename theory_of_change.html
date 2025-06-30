@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Theory of Change Survey</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            max-width: 800px;
+        }
+        section {
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        label {
+            display: block;
+            margin: 8px 0 4px;
+            font-weight: bold;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        textarea {
+            height: 80px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .hidden { display:none; }
+        #tocOutput {
+            margin-top: 20px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>Theory of Change Survey</h1>
+    <form id="tocForm">
+        <section>
+            <h2>A. Organization & Context</h2>
+            <label>Organization Name</label>
+            <input type="text" id="org_name" required>
+            <label>Mission</label>
+            <textarea id="mission"></textarea>
+            <label>Geographic Scope</label>
+            <input type="text" id="geographic_scope">
+            <label>Primary Beneficiaries</label>
+            <textarea id="beneficiaries"></textarea>
+        </section>
+        <section>
+            <h2>B. Problem Definition</h2>
+            <label>Core Problem</label>
+            <textarea id="core_problem" required></textarea>
+            <label>Evidence</label>
+            <textarea id="evidence"></textarea>
+            <label>Population Most Affected</label>
+            <textarea id="affected_population"></textarea>
+            <label>Current Gaps</label>
+            <textarea id="current_gaps"></textarea>
+            <label>External Factors Influencing the Problem</label>
+            <textarea id="external_factors_problem"></textarea>
+        </section>
+        <section>
+            <h2>C. Vision and Desired Outcomes</h2>
+            <label>Long-term Outcomes</label>
+            <textarea id="long_term_outcome"></textarea>
+            <label>Intermediate Outcomes</label>
+            <textarea id="intermediate_outcome"></textarea>
+            <label>Near-term Outputs</label>
+            <textarea id="near_term_output"></textarea>
+        </section>
+        <section>
+            <h2>D. Resources & Capacities</h2>
+            <label>Internal Assets</label>
+            <textarea id="internal_assets"></textarea>
+            <label>External Partnerships</label>
+            <textarea id="external_partners"></textarea>
+            <label>Assumed Resources</label>
+            <textarea id="assumed_resources"></textarea>
+            <label>Constraints</label>
+            <textarea id="constraints"></textarea>
+        </section>
+        <section>
+            <h2>E. Activities & Strategies</h2>
+            <label>Planned Activities</label>
+            <textarea id="activities"></textarea>
+            <label>Evidence or Best Practices</label>
+            <textarea id="best_practices"></textarea>
+            <label>Critical Assumptions</label>
+            <textarea id="critical_assumptions"></textarea>
+        </section>
+        <section>
+            <h2>F. Risks & External Conditions</h2>
+            <label>Potential Risks or Barriers</label>
+            <textarea id="potential_risks"></textarea>
+            <label>External Factors Beyond Control</label>
+            <textarea id="external_factors"></textarea>
+            <label>Mitigation Strategies</label>
+            <textarea id="mitigation_strategies"></textarea>
+            <label>Indicators or Data to Monitor</label>
+            <textarea id="indicators_monitor"></textarea>
+        </section>
+        <section>
+            <h2>G. Monitoring & Evaluation</h2>
+            <label>Success Indicators</label>
+            <textarea id="success_indicators"></textarea>
+            <label>Data Collection Methods</label>
+            <textarea id="data_collection_methods"></textarea>
+            <label>Frequency of Evaluation</label>
+            <textarea id="frequency_evaluation"></textarea>
+            <label>Learning Loops</label>
+            <textarea id="learning_loops"></textarea>
+        </section>
+        <section>
+            <h2>H. Additional Comments</h2>
+            <textarea id="additional_comments"></textarea>
+        </section>
+        <button type="submit">Generate Theory of Change</button>
+    </form>
+    <div id="tocOutput" class="hidden"></div>
+
+    <script>
+        document.getElementById('tocForm').addEventListener('submit', function(e){
+            e.preventDefault();
+            const data = {
+                org_name: document.getElementById('org_name').value,
+                mission: document.getElementById('mission').value,
+                geographic_scope: document.getElementById('geographic_scope').value,
+                beneficiaries: document.getElementById('beneficiaries').value,
+                core_problem: document.getElementById('core_problem').value,
+                evidence: document.getElementById('evidence').value,
+                affected_population: document.getElementById('affected_population').value,
+                current_gaps: document.getElementById('current_gaps').value,
+                external_factors_problem: document.getElementById('external_factors_problem').value,
+                long_term_outcome: document.getElementById('long_term_outcome').value,
+                intermediate_outcome: document.getElementById('intermediate_outcome').value,
+                near_term_output: document.getElementById('near_term_output').value,
+                internal_assets: document.getElementById('internal_assets').value,
+                external_partners: document.getElementById('external_partners').value,
+                assumed_resources: document.getElementById('assumed_resources').value,
+                constraints: document.getElementById('constraints').value,
+                activities: document.getElementById('activities').value,
+                best_practices: document.getElementById('best_practices').value,
+                critical_assumptions: document.getElementById('critical_assumptions').value,
+                potential_risks: document.getElementById('potential_risks').value,
+                external_factors: document.getElementById('external_factors').value,
+                mitigation_strategies: document.getElementById('mitigation_strategies').value,
+                indicators_monitor: document.getElementById('indicators_monitor').value,
+                success_indicators: document.getElementById('success_indicators').value,
+                data_collection_methods: document.getElementById('data_collection_methods').value,
+                frequency_evaluation: document.getElementById('frequency_evaluation').value,
+                learning_loops: document.getElementById('learning_loops').value,
+                additional_comments: document.getElementById('additional_comments').value
+            };
+
+            // Save to localStorage for demonstration purposes
+            localStorage.setItem('toc_survey', JSON.stringify(data));
+
+            // Simple template-based output (placeholder for AI-generated text)
+            const narrative = `Organization ${data.org_name} aims to address ${data.core_problem}. ` +
+                `The mission is "${data.mission}" and activities include ${data.activities}. ` +
+                `These activities are expected to produce ${data.near_term_output}, leading to ${data.intermediate_outcome} ` +
+                `and ultimately ${data.long_term_outcome}. Key assumptions: ${data.critical_assumptions}.`;
+
+            const output = document.getElementById('tocOutput');
+            output.textContent = narrative;
+            output.classList.remove('hidden');
+            output.scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>

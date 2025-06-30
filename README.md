@@ -8,6 +8,7 @@ A web application for collecting and managing initiative ideas within an organiz
 - Admin dashboard for viewing submissions
 - CSV export functionality
 - Basic authentication for admin access
+- Theory of Change survey page for generating basic summaries
 
 ## Deployment Instructions
 
@@ -20,6 +21,7 @@ A web application for collecting and managing initiative ideas within an organiz
 
 2. **Accessing the Application**:
    - Public submission form: `https://yourusername.github.io/repositoryname/index.html`
+   - Theory of Change survey: `https://yourusername.github.io/repositoryname/theory_of_change.html`
    - Admin login: `https://yourusername.github.io/repositoryname/admin.html`
 
 ## Admin Credentials
